@@ -68,11 +68,29 @@ jobs:
 
           Add-Content -Path $env:GITHUB_PATH -Value "$env:GITHUB_WORKSPACE\PERL\perl\bin"
 
+      - name: Setup NASM
+        shell: pwsh
+        run: |
+          $nasmUrl = "https://www.nasm.us/pub/nasm/releasebuilds/3.01/win64/nasm-3.01-win64.zip"
+          $zipPath = "$env:GITHUB_WORKSPACE\nasm.zip"
+          $tempDir = "$env:GITHUB_WORKSPACE\nasm_tmp"
+          $nasmDir = "$env:GITHUB_WORKSPACE\NASM"
+
+          Invoke-WebRequest -Uri $nasmUrl -OutFile $zipPath
+          if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
+          if (Test-Path $nasmDir) { Remove-Item $nasmDir -Recurse -Force }
+
+          Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
+          $root = Get-ChildItem -Path $tempDir | Where-Object { $_.PSIsContainer } | Select-Object -First 1
+          Move-Item -Path $root.FullName -Destination $nasmDir
+
+          Add-Content -Path $env:GITHUB_PATH -Value "$env:GITHUB_WORKSPACE\NASM"
+
       - name: Perl configure
         shell: cmd
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
-          perl.exe Configure shared --prefix=%GITHUB_WORKSPACE%\%PROJECT_PATH%\%OPENSSL_INSTALL%
+          perl.exe Configure VC-WIN64A shared --prefix=%GITHUB_WORKSPACE%\%PROJECT_PATH%\%OPENSSL_INSTALL%
 
       - name: Build
         shell: cmd
