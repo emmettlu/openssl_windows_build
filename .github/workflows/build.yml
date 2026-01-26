@@ -50,23 +50,23 @@ jobs:
           ref: refs/tags/${{ env.PROJECT_VERSION }}
           path: ${{ env.PROJECT_PATH }}
 
-      - name: Setup Strawberry Perl
-        shell: pwsh
-        run: |
-          $perlUrl = "https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_54201_64bit/strawberry-perl-5.42.0.1-64bit-portable.zip"
-          $zipPath = "$env:GITHUB_WORKSPACE\strawberry-perl.zip"
-          $tempDir = "$env:GITHUB_WORKSPACE\perl_tmp"
-          $perlDir = "$env:GITHUB_WORKSPACE\PERL"
+      # - name: Setup Strawberry Perl
+      #   shell: pwsh
+      #   run: |
+      #     $perlUrl = "https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_54201_64bit/strawberry-perl-5.42.0.1-64bit-portable.zip"
+      #     $zipPath = "$env:GITHUB_WORKSPACE\strawberry-perl.zip"
+      #     $tempDir = "$env:GITHUB_WORKSPACE\perl_tmp"
+      #     $perlDir = "$env:GITHUB_WORKSPACE\PERL"
 
-          Invoke-WebRequest -Uri $perlUrl -OutFile $zipPath
-          if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
-          if (Test-Path $perlDir) { Remove-Item $perlDir -Recurse -Force }
+      #     Invoke-WebRequest -Uri $perlUrl -OutFile $zipPath
+      #     if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
+      #     if (Test-Path $perlDir) { Remove-Item $perlDir -Recurse -Force }
 
-          Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
-          $root = Get-ChildItem -Path $tempDir | Where-Object { $_.PSIsContainer } | Select-Object -First 1
-          Move-Item -Path $root.FullName -Destination $perlDir
+      #     Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
+      #     $root = Get-ChildItem -Path $tempDir | Where-Object { $_.PSIsContainer } | Select-Object -First 1
+      #     Move-Item -Path $root.FullName -Destination $perlDir
 
-          Add-Content -Path $env:GITHUB_PATH -Value "$env:GITHUB_WORKSPACE\PERL\perl\bin"
+      #     Add-Content -Path $env:GITHUB_PATH -Value "$env:GITHUB_WORKSPACE\PERL\perl\bin"
 
       - name: Setup NASM
         shell: pwsh
