@@ -7,13 +7,14 @@ on:
 jobs:
   build:
     env:
-      PROJECT_REPOSITORY: watchexec/watchexec
-      PROJECT_VERSION: v2.3.2
-      PROJECT_PATH: watchexec
-      PROJECT_BIN: watchexec
+      PROJECT_REPOSITORY: openssl/openssl
+      PROJECT_VERSION: openssl-3.5.4
+      PROJECT_PATH: openssl
+      PROJECT_BIN: openssl
+      OPENSSL_INSTALL: OPENSSL_INSTALL
     strategy:
       matrix:
-        os: [ubuntu-24.04, windows-2022]
+        os: [windows-2022]
 
     runs-on: ${{ matrix.os }}
 
@@ -52,28 +53,21 @@ jobs:
           ref: refs/tags/${{ env.PROJECT_VERSION }}
           path: ${{ env.PROJECT_PATH }}
 
-      - name: Copy config file
-        shell: bash
+      - name: Perl configure
+        shell: cmd
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
-          mkdir -p .cargo
-          cp -f ../.cargo/config.toml .cargo
+          perl.exe Configure shared --prefix=%GITHUB_WORKSPACE%\%PROJECT_PATH%\%OPENSSL_INSTALL%
 
       - name: Build
-        shell: bash
+        shell: cmd
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
-          rm -f Cargo.lock
-          cargo update
-          cargo b -r
+          nmake install
 
       - name: Archive
         uses: actions/upload-artifact@v5
         with:
           name: ${{ env.PROJECT_BIN }}_${{ runner.os }}
           path: |
-            ${{ env.PROJECT_PATH }}/target/release/*.so
-            ${{ env.PROJECT_PATH }}/target/release/*.dll
-
-            ${{ env.PROJECT_PATH }}/target/release/${{ env.PROJECT_BIN }}
-            ${{ env.PROJECT_PATH }}/target/release/${{ env.PROJECT_BIN }}.exe
+            ${{ env.PROJECT_PATH }}/${{ env.OPENSSL_INSTALL }}/
