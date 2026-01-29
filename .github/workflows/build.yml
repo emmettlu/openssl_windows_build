@@ -8,7 +8,7 @@ jobs:
   build:
     env:
       PROJECT_REPOSITORY: openssl/openssl
-      PROJECT_VERSION: openssl-3.5.4
+      PROJECT_VERSION: openssl-3.5.5
       PROJECT_PATH: openssl
       PROJECT_BIN: openssl
       OPENSSL_INSTALL: OPENSSL_INSTALL
