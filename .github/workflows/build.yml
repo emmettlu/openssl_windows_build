@@ -43,6 +43,9 @@ jobs:
           arch: x64
           sdk: 10.0.19041.0
 
+      - name: Checkout Self
+        uses: actions/checkout@v6
+
       - name: Checkout ${{ env.PROJECT_PATH }}
         uses: actions/checkout@v6
         with:
@@ -90,7 +93,7 @@ jobs:
         shell: bash
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
-          cp -f ../../copy.pl util/copy.pl
+          cp -f ../copy.pl util/copy.pl
 
       - name: Perl configure
         shell: cmd
