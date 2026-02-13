@@ -90,7 +90,7 @@ jobs:
         shell: bash
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
-          cp -f ../copy.pl util/copy.pl
+          cp -f ../../copy.pl util/copy.pl
 
       - name: Perl configure
         shell: cmd
