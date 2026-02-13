@@ -90,8 +90,8 @@ jobs:
         shell: cmd
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
-          set CFLAGS=/arch:AVX2 /MD /MP /Oi /Os /Gy /GL /Gw /fp:fast /GR- /GS- /DNDEBUG
-          set LDFLAGS=/LTCG /MANIFEST:NO /MERGE:_RDATA=.rdata /OPT:REF /OPT:ICF
+          set CFLAGS=/arch:AVX2 /MD /MP /Oi /Os /Gy /Gw /fp:fast /GR- /GS-
+          set LDFLAGS=/MANIFEST:NO /MERGE:_RDATA=.rdata /OPT:REF /OPT:ICF
 
           perl.exe Configure VC-WIN64A shared no-docs no-tests no-demos no-legacy --prefix=%GITHUB_WORKSPACE%\%PROJECT_PATH%\%OPENSSL_INSTALL%
 
