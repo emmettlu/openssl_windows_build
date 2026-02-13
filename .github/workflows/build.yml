@@ -90,13 +90,16 @@ jobs:
         shell: cmd
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
+          set CFLAGS=/arch:AVX2 /MD /MP /Oi /Os /Gy /GL /Gw /fp:fast /GR- /GS- /DNDEBUG
+          set LDFLAGS=/LTCG /MANIFEST:NO /MERGE:_RDATA=.rdata /OPT:REF /OPT:ICF
+
           perl.exe Configure VC-WIN64A shared --prefix=%GITHUB_WORKSPACE%\%PROJECT_PATH%\%OPENSSL_INSTALL%
 
       - name: Build
         shell: cmd
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
-          nmake /NOLOGO CFLAGS="/arch:AVX2 /MD /MP /Oi /Os /Gy /GL /Gw /fp:fast /GR- /GS-" LDFLAGS="/LTCG /OPT:REF /OPT:ICF" install
+          nmake /NOLOGO install
 
       - name: Archive
         uses: actions/upload-artifact@v5
